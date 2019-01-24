@@ -3,12 +3,32 @@ package Range::Validator;
 use 5.006;
 use strict;
 use warnings;
+use Carp;
 
-my $this_version = 'v0.0.2_main_d20190124-2051';
+my $this_version = 'v0.0.3_main_d20190124-2108';
 
-our $VERSION = '0.01';
+our $VERSION = '0.03';
 
 sub validate {
+  my $range = undef;
+  my @range_arr = ();
+
+  # @comment abrahmdsl 20190124-2054: assume we have a  string if we
+  #   receive only one argument
+  if ( scalar( @_ ) == 1 ) {
+    $range = $_[0];
+  }
+  # .. otherwise received a list
+  else{
+    # ...
+  }
+  $range =~ s/\s+//g;
+  #die if invalid characters
+  Carp::croak "[e] Invalid character passed in string [$range]!"
+    if ( $range =~ /[^\s,.\d]/ ); # --- new line
+
+  @range_arr = eval( $range );
+  return @range_arr;
 }
 
 1;

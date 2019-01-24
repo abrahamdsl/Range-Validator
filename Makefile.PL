@@ -3,6 +3,8 @@ use strict;
 use warnings;
 use ExtUtils::MakeMaker;
 
+my $this_version = 'v0.0.3_main_d20190124-2108';
+
 WriteMakefile(
     NAME             => 'Range::Validator',
     AUTHOR           => q{abrahamdsl <adsllave@outlook.com>},
@@ -20,6 +22,7 @@ WriteMakefile(
     PREREQ_PM => {
         #'ABC'              => '1.6',
         #'Foo::Bar::Module' => '5.0401',
+        'Carp' => '0'',  # --- new line
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES => 'Range-Validator-*' },
