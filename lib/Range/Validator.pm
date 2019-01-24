@@ -5,10 +5,9 @@ use strict;
 use warnings;
 use Carp;
 
-my $this_version = 'v0.0.3_main_d20190124-2117';
+my $this_version = 'v0.0.4_main_d20190124-2122';
 
-our $VERSION = '0.03';
-
+our $VERSION = '0.04';
 
 sub validate {
   my $range = undef;
@@ -27,7 +26,12 @@ sub validate {
   #die if invalid characters
   Carp::croak "[e] Invalid character passed in string [$range]!"
     if ( $range =~ /[^\s,.\d]/ ); # --- new line
-
+  # @comment abrahamdsl 20190124-2119: not allowed a lone '.'
+  Carp::croak "\[e\] Invalid range \[$range\] (single '.')!"
+    if ( $range =~ /[^.]+\.{1}[^.]+/ );
+  # not allowed more than 2.
+  Carp::croak "\[e\] Invalid  range \[$range\] (more than 2 '.')!"
+    if ( $range =~ /[^.]+\.{3}/ );
   @range_arr = eval( $range );
   return @range_arr;
 }
