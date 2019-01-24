@@ -1,8 +1,10 @@
-#!perl -T
+#!perl
 use 5.006;
 use strict;
 use warnings;
 use Test::More;
+
+my $this_version = 'v0.0.2_main_d20190124-2051';
 
 plan tests => 1;
 
