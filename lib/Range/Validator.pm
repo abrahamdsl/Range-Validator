@@ -5,9 +5,10 @@ use strict;
 use warnings;
 use Carp;
 
-my $this_version = 'v0.0.3_main_d20190124-2108';
+my $this_version = 'v0.0.3_main_d20190124-2117';
 
 our $VERSION = '0.03';
+
 
 sub validate {
   my $range = undef;
@@ -59,6 +60,16 @@ Version 0.01
 	
 # more POD ...
 
+=cut
+
+
+=head1 SUBROUTINES
+
+=head2 validate
+
+  This function accepts a string or a list (range) and returns an array.
+  In the string form the accepted characters are: positive integers, dots,
+    commas and spaces. Every space will be removed.
 =cut
 
 sub function1 {
