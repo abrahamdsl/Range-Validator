@@ -5,7 +5,7 @@ use warnings;
 use Test::More qw(no_plan);
 use Test::Exception;
 
-my $this_version = 'v0.0.5_main_d20190124-2135';
+my $this_version = 'v0.0.6_main_d20190406-0202';
 
 use_ok( 'Range::Validator' );
 
@@ -28,7 +28,12 @@ dies_ok {
   'expected to die with a lone dot ??' ;
 =cut
 
-foreach my $string ( '1.2', '0..2,5.6,8', '1,2,.,3', '.' ) {
+foreach my $string ( '1.2', '0..2,5.6,8', '1,2,.,3', '.', '1.', '.1' ) {
   dies_ok { Range::Validator::validate( $string ) }
     "expected to die with a lone dot in range[$string]";
+}
+
+foreach my $newstring ( '1...3', '1,3...5', '...', '1...', '...2' ) {
+  dies_ok { Range::Validator::validate( $newstring ) }
+    " expected to die with three dots in range[ $newstring ] ";
 }
