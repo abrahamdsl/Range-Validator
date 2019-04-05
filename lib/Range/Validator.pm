@@ -5,9 +5,9 @@ use strict;
 use warnings;
 use Carp;
 
-my $this_version = 'v0.0.4_main_d20190124-2122';
+my $this_version = 'v0.0.5_main_d20190124-2135';
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 sub validate {
   my $range = undef;
