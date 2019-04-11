@@ -5,9 +5,11 @@ use strict;
 use warnings;
 use Carp;
 
-my $this_version = 'v0.0.8_main_d20190411-2053';
+my $this_version = 'v0.0.9_main_d20190412-0000';
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
+
+our warnings = 0;
 
 sub validate {
   my $range = undef;
@@ -36,6 +38,9 @@ sub validate {
     }
     # eval the range
     @range_arr = eval( $range );
+  }
+  elsif ( $WARNINGS == 1 and scalar( @_ ) == 0 ) {
+    carp "Empty list passed in! We assume all elements will be processed.";
   }
   # .. otherwise received a list
   else{
