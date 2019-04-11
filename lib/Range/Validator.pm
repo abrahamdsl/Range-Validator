@@ -5,9 +5,9 @@ use strict;
 use warnings;
 use Carp;
 
-my $this_version = 'v0.0.6_main_d20190406-0202';
+my $this_version = 'v0.0.7_main_d20190411-2035';
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 sub validate {
   my $range = undef;
@@ -32,7 +32,21 @@ sub validate {
   # not allowed more than 2.
   Carp::croak "\[e\] Invalid  range \[$range\] (more than 2 '.')!"
     if ( $range =~ /\.{3}/ );
+  # spot reverse ranges like 27..5
+  if ( $range =~ /[^.]\.\.[^.]/ ) {
+    foreach my $match( $range =~ /(\d+\.\.\d+)/g ) {
+      $match =~ /(\d+)\.\.(\d+)/;
+      croak "$1 > $2 in range[$range]" if $1 > $2;
+    }
+  }
+
+  # eval the range
   @range_arr = eval( $range );
+  # remove duplicate elements using a hash
+  my %single = map{ $_ => 1 } @range_arr;   # --new line
+  # sort unique keys numerically
+  @range_arr = sort{ $a <=> $b } keys %single;  # --new line
+
   return @range_arr;
 }
 
