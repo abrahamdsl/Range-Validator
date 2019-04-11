@@ -5,7 +5,7 @@ use warnings;
 use Test::More qw(no_plan);
 use Test::Exception;
 
-my $this_version = 'v0.0.6_main_d20190406-0202';
+my $this_version = 'v0.0.7_main_d20190411-2044';
 
 use_ok( 'Range::Validator' );
 
@@ -36,4 +36,25 @@ foreach my $string ( '1.2', '0..2,5.6,8', '1,2,.,3', '.', '1.', '.1' ) {
 foreach my $newstring ( '1...3', '1,3...5', '...', '1...', '...2' ) {
   dies_ok { Range::Validator::validate( $newstring ) }
     " expected to die with three dots in range[ $newstring ] ";
+}
+
+foreach my $reversed( '3..1,7..9', '1..4,7..5', '3..4, 7..5', '0..2,27..5' ) {
+  dies_ok { Range::Validator::validate( $reversed ) } "expected to die with" .
+    " reverse range [$reversed]";
+}
+
+my %test = (
+	'1,1..3'	=> [(1,2,3)],
+	'1,2..5,4'	=> [(1,2,3,4,5)],
+	'1..5,3'	=> [(1,2,3,4,5)],
+	'8,9,1..2'	=> [(1,2,8,9)],
+	'1..3,3,5..7'	=> [(1,2,3,5,6,7)],
+	'5..7,1..6'		=> [(1,2,3,4,5,6,7)],
+	'0..5,3'		=> [(0,1,2,3,4,5)]
+);
+
+# ranges, even if overlapped or unordered, return the correct array
+foreach my $range( keys %test ) {
+  my @res = Range::Validator::validate( $range );
+  is_deeply( $test{ $range }, \@res, "correct result for range [$range]" );
 }
