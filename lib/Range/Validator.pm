@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use Carp;
 
-my $this_version = 'v0.0.7_main_d20190411-2035';
+my $this_version = 'v0.0.8_main_d20190411-2047';
 
 our $VERSION = '0.07';
 
@@ -17,31 +17,32 @@ sub validate {
   #   receive only one argument
   if ( scalar( @_ ) == 1 ) {
     $range = $_[0];
+    $range =~ s/\s+//g;
+    #die if invalid characters
+    Carp::croak "[e] Invalid character passed in string [$range]!"
+      if ( $range =~ /[^\s,.\d]/ ); # --- new line
+    # @comment abrahamdsl 20190124-2119: not allowed a lone '.'
+    Carp::croak "\[e\] Invalid range \[$range\] (single '.')!"
+      if ( $range =~ /(?<!\.)\.(?!\.)/ );
+    # not allowed more than 2.
+    Carp::croak "\[e\] Invalid  range \[$range\] (more than 2 '.')!"
+      if ( $range =~ /\.{3}/ );
+    # spot reverse ranges like 27..5
+    if ( $range =~ /[^.]\.\.[^.]/ ) {
+      foreach my $match( $range =~ /(\d+\.\.\d+)/g ) {
+        $match =~ /(\d+)\.\.(\d+)/;
+        croak "$1 > $2 in range[$range]" if $1 > $2;
+      }
+    }
+    # eval the range
+    @range_arr = eval( $range );
   }
   # .. otherwise received a list
   else{
     # ...
-  }
-  $range =~ s/\s+//g;
-  #die if invalid characters
-  Carp::croak "[e] Invalid character passed in string [$range]!"
-    if ( $range =~ /[^\s,.\d]/ ); # --- new line
-  # @comment abrahamdsl 20190124-2119: not allowed a lone '.'
-  Carp::croak "\[e\] Invalid range \[$range\] (single '.')!"
-    if ( $range =~ /(?<!\.)\.(?!\.)/ );
-  # not allowed more than 2.
-  Carp::croak "\[e\] Invalid  range \[$range\] (more than 2 '.')!"
-    if ( $range =~ /\.{3}/ );
-  # spot reverse ranges like 27..5
-  if ( $range =~ /[^.]\.\.[^.]/ ) {
-    foreach my $match( $range =~ /(\d+\.\.\d+)/g ) {
-      $match =~ /(\d+)\.\.(\d+)/;
-      croak "$1 > $2 in range[$range]" if $1 > $2;
-    }
+    @range_arr = @_;
   }
 
-  # eval the range
-  @range_arr = eval( $range );
   # remove duplicate elements using a hash
   my %single = map{ $_ => 1 } @range_arr;   # --new line
   # sort unique keys numerically
