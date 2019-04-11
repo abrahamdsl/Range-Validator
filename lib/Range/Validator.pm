@@ -5,9 +5,9 @@ use strict;
 use warnings;
 use Carp;
 
-my $this_version = 'v0.0.8_main_d20190411-2047';
+my $this_version = 'v0.0.8_main_d20190411-2053';
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 sub validate {
   my $range = undef;
@@ -89,6 +89,14 @@ Version 0.01
   This function accepts a string or a list (range) and returns an array.
   In the string form the accepted characters are: positive integers, dots,
     commas and spaces. Every space will be removed.
+
+  Every string with occurences of a lone dot or more than two dots will be
+    rejected causing an exception in the calling program.
+
+  Reverse ranges like in '3..1' passed as string will also cause an exception.
+
+  In both string and list form any duplicate element (overlapped range) will be
+    silently removed. Any form of unordered list will be silently reordered.
 =cut
 
 sub function1 {
