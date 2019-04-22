@@ -4,8 +4,9 @@ use strict;
 use warnings;
 use Test::More qw(no_plan);
 use Test::Exception;
+use Capture::Tiny qw(capture);
 
-my $this_version = 'v0.0.8_main_d20190411-2100';
+my $this_version = 'v0.0.11_main_d20190422-1519';
 
 use_ok( 'Range::Validator' );
 
@@ -80,4 +81,30 @@ foreach my $list( @test ) {
     \@res,
     "correct result for list: @{$list->[0]}",
   );
+}
+
+
+note ( 'test of warnings emitted' );
+{
+  local $Range::Validator::WARNINGS;
+  my $stdout = undef;
+  my $stderr = undef;
+  my @result = undef;
+
+  ( $stdout, $stderr, @result ) = capture{ Range::Validator::validate() };
+  unlike(
+    $stderr,
+    qr/^Empty list passed in/, 'no warning for empty list ' .
+      "unless \$Range::Validator::WARNINGS"
+  );
+
+  $Range::Validator::WARNINGS = 1;
+
+  ( $stdout, $stderr, @result ) = capture{ Range::Validator::validate() };
+  like(
+    $stderr,
+    qr/^Empty list passed in/, 'right warning for empty list ' .
+      "if \$Range::Validator::WARNINGS"
+  );
+
 }

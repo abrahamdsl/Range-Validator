@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use ExtUtils::MakeMaker;
 
-my $this_version = 'v0.0.3_main_d20190124-2108';
+my $this_version = 'v0.0.11_main_d20190422-1519';
 
 WriteMakefile(
     NAME             => 'Range::Validator',
@@ -18,6 +18,8 @@ WriteMakefile(
     },
     BUILD_REQUIRES => {
         'Test::More' => '0',
+        'Test::Exception' => '0',
+        'Capture::Tiny' => '0', # --new line
     },
     PREREQ_PM => {
         #'ABC'              => '1.6',

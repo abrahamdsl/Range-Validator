@@ -5,9 +5,9 @@ use strict;
 use warnings;
 use Carp;
 
-my $this_version = 'v0.0.10_main_d20190422-1509';
+my $this_version = 'v0.0.11_main_d20190422-1519';
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 our $WARNINGS = 0;
 
@@ -113,6 +113,12 @@ sub function1 {
 
 sub function2 {
 }
+
+
+=head1 ENABLE WARNINGS
+
+If the $Range::Validator::WARNINGS is set to a true value then an empty list
+  passed to validate will provoke a warning from the caller perspective.
 
 =head1 AUTHOR
 
